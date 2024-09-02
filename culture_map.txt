@@ -1,0 +1,69 @@
+%matplotlib inline
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Define pastel colors that are colorblind-friendly
+colors = {
+    'India': '#A0CBE8',    # Light Blue
+    'Netherlands': '#F7B7A3'  # Light Salmon
+}
+
+# Labels for the 8 dimensions and their scale extremes
+dimension_info = {
+    "Communications": ("Low-Context", "High-Context"),
+    "Evaluating": ("Direct Feedback", "Indirect Feedback"),
+    "Persuading": ("Principles-First", "Applications-First"),
+    "Leading": ("Egalitarian", "Hierarchical"),
+    "Deciding": ("Consensual", "Top-Down"),
+    "Trusting": ("Task-Based", "Relationship-Based"),
+    "Disagreeing": ("Confrontational", "Avoids Confrontation"),
+    "Scheduling": ("Linear-Time", "Flexible-Time")
+}
+
+# Values for India and the Netherlands (on a scale of 1 to 10)
+india = np.array([7, 7, 6, 8, 7, 8, 7, 8])
+netherlands = np.array([2, 3, 4, 3, 3, 3, 2, 2])
+
+# Number of dimensions
+num_vars = len(dimension_info)
+
+# Create a figure with a horizontal bar plot
+fig, ax = plt.subplots(figsize=(14, 10))
+
+# Plot horizontal bars for India with pastel color
+bars_india = ax.barh(np.arange(num_vars) - 0.3, india, height=0.4, color=colors['India'], label='India')
+
+# Plot horizontal bars for the Netherlands with pastel color
+bars_netherlands = ax.barh(np.arange(num_vars) + 0.2, netherlands, height=0.4, color=colors['Netherlands'], label='Netherlands')
+
+# Set the y-ticks and y-tick labels
+ax.set_yticks(np.arange(num_vars))
+ax.set_yticklabels(dimension_info.keys())
+
+# Add scale extreme labels for each dimension with adjusted padding
+padding = 1  # Padding to avoid overlap
+
+for i, (dimension, (left_label, right_label)) in enumerate(dimension_info.items()):
+    # Add left label with padding
+    ax.text(0.6 - padding, i, left_label, va='center', ha='right', fontsize=10, color='black', bbox=dict(facecolor='white', edgecolor='none', alpha=0.5))
+    # Add right label with padding
+    ax.text(10 + padding, i, right_label, va='center', ha='left', fontsize=10, color='black', bbox=dict(facecolor='white', edgecolor='none', alpha=0.5))
+
+# Add horizontal lines of separation between each dimension
+for i in range(num_vars - 1):
+    ax.axhline(y=i + 0.5, color='black', linestyle='--', linewidth=0.8)
+
+# Set the x-axis limits
+ax.set_xlim(1, 10)  # Updated x-axis range
+
+# Add labels, legend, and grid
+ax.set_xlabel('Score (1 to 10)')
+ax.set_title('Comparison of Dimensions between India and Netherlands')
+ax.legend()
+ax.grid(axis='x', linestyle='--', alpha=0.7)
+
+# Adjust layout for better spacing
+plt.tight_layout()
+
+# Display the plot
+plt.show()
